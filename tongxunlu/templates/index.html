@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>联系人列表</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>姓名</th>
+                <th>电话</th>
+                <th>邮箱</th>
+                <th>地址</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for contact in contacts %}
+            <tr>
+                <td>
+                    {{ contact.name }}
+                    {% if contact.is_bookmarked %}
+                        <span class="text-warning">★</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for detail in contact.contact_details if detail.detail_type == 'phone' %}
+                        {{ detail.value }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for detail in contact.contact_details if detail.detail_type == 'email' %}
+                        {{ detail.value }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for detail in contact.contact_details if detail.detail_type == 'address' %}
+                        {{ detail.value }}<br>
+                    {% endfor %}
+                </td>
+                <td>
+                    <a href="{{ url_for('toggle_bookmark', contact_id=contact.id) }}" class="btn btn-sm btn-warning">
+                        {% if contact.is_bookmarked %}取消收藏{% else %}收藏{% endif %}
+                    </a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %} 
